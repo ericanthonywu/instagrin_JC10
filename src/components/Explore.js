@@ -20,7 +20,6 @@ class Explore extends React.Component {
             Object.keys(post.val()).forEach(data => {
                 const currentData = post.val()[data];
                 if (currentData.userId !== this.props.userId) {
-
                     arrData.push(currentData);
                 }
             });

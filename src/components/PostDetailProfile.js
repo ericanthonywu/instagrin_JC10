@@ -10,7 +10,7 @@ import '@firebase/database';
 import '@firebase/storage';
 
 class PostDetailProfile extends Component {
-    state = {isVisible: false, deleteVisible: false, editPost: false, caption: this.props.caption};
+    state = {isVisible: false, deleteVisible: false, caption: this.props.caption};
 
     componentDidUpdate() {
         if (!this.props.username) {
@@ -22,16 +22,21 @@ class PostDetailProfile extends Component {
     //     alert(JSON.stringify(this.props))
     // }
 
+    updateData = () => {
+        firebase.database().ref('/posts').once('value').then(post => {
+            Object.keys(post.val()).forEach(data => {
+                if(data === this.props.id) {
+                    this.setState({
+                        caption: post.val()[data].caption,
+                    });
+                }
+            });
+        });
+    };
+
     onDeletePress = () => {
         this.setState({deleteVisible: false});
         this.props.deletePost(this.props.id);
-    };
-    updateCaption = () => {
-        firebase.database().ref(`/posts/${this.props.id}`).set({
-            caption: this.state.caption,
-            imageURL: this.props.imageURL,
-            userId: this.props.userId
-        }).then(() => this.setState({editPost: false}))
     };
 
     render() {
@@ -46,24 +51,11 @@ class PostDetailProfile extends Component {
                         text: 'Post',
                         style: {color: 'black', fontSize: 18, fontWeight: '700'},
                     }}
-                    leftComponent={this.state.editPost
-                        ?
-                        {
-                            icon: 'close',
-                            color: 'black',
-                            onPress: () => this.setState({editPost: false}),
-                        }
-                        :
-                        {
-                            icon: 'arrow-back',
-                            color: 'black',
-                            onPress: () => this.props.selectProfilePost(null),
-                        }}
-                    rightComponent={this.state.editPost ? {
-                        icon: 'done',
+                    leftComponent={{
+                        icon: 'arrow-back',
                         color: 'black',
-                        onPress: () => this.updateCaption(),
-                    } : {}}
+                        onPress: () => this.props.selectProfilePost(null),
+                    }}
                     containerStyle={{
                         backgroundColor: '#fff',
                         justifyContent: 'space-around',
@@ -94,12 +86,7 @@ class PostDetailProfile extends Component {
                         </CardItem>
                         <CardItem>
                             <Left>
-                                {this.state.editPost ?
-                                    <Input defaultValue={this.state.caption}
-                                           onChange={event => this.setState({caption: event.nativeEvent.text})}/>
-                                    :
-                                    <Text>{this.state.caption}</Text>
-                                }
+                                <Text>{this.state.caption}</Text>
                             </Left>
                         </CardItem>
                     </Card>
@@ -115,7 +102,14 @@ class PostDetailProfile extends Component {
                                 fontSize: 16,
                                 paddingVertical: 15,
                             }}
-                            onPress={() => this.setState({editPost: true, isVisible: false})}
+                            onPress={() => {
+                                this.props.navigation.navigate('EditPost', {
+                                    ...this.props,
+                                    captions: this.state.caption,
+                                    onGoBack: () => this.updateData(),
+                                });
+                                this.setState({isVisible: false});
+                            }}
                         >
                             Edit
                         </Text>
