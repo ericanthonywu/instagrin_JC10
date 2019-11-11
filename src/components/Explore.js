@@ -3,7 +3,7 @@ import firebase from '@firebase/app';
 import '@firebase/auth';
 import '@firebase/database';
 import '@firebase/storage';
-import {Image, TouchableWithoutFeedback, View} from 'react-native';
+import {Image, ScrollView, TouchableWithoutFeedback, View} from 'react-native';
 import {connect} from 'react-redux';
 import {selectProfilePost} from '../actions';
 import {Input, Icon, SearchBar} from 'react-native-elements';
@@ -34,8 +34,8 @@ class Explore extends React.Component {
     filterExplore = text => {
         this.setState({
             filteredPost: this.state.post.filter(data => data.caption.includes(text)),
-            search: text
-        })
+            search: text,
+        });
     };
 
 
@@ -55,15 +55,18 @@ class Explore extends React.Component {
                         searchIcon={{size: 27}}
                     />
                 </View>
-                <View style={{flexWrap: 'wrap', alignItems: 'flex-start', flexDirection: 'row', width: '100%'}}>
-                    {this.state[this.state.search ? 'filteredPost' : 'post'].map(post =>
-                        <TouchableWithoutFeedback
-                            onPress={() => this.props.navigation.navigate('DetailPost', post)}>
-                            <View style={{width: '33.3%', marginVertical: 1}}>
-                                <Image source={{uri: post.imageURL}} style={{width: '100%', height: 125}}/>
-                            </View>
-                        </TouchableWithoutFeedback>)}
-                </View>
+
+                <ScrollView>
+                    <View style={{flexWrap: 'wrap', alignItems: 'flex-start', flexDirection: 'row', width: '100%'}}>
+                        {this.state[this.state.search ? 'filteredPost' : 'post'].map(post =>
+                            <TouchableWithoutFeedback
+                                onPress={() => this.props.navigation.navigate('DetailPost', post)}>
+                                <View style={{width: '33.3%', marginVertical: 1}}>
+                                    <Image source={{uri: post.imageURL}} style={{width: '100%', height: 125}}/>
+                                </View>
+                            </TouchableWithoutFeedback>)}
+                    </View>
+                </ScrollView>
             </>
         );
     }
