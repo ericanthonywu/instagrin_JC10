@@ -37,6 +37,32 @@ class Explore extends React.Component {
             search: text,
         });
     };
+    renderExplore = () => {
+        // this.state[this.state.search ? 'filteredPost' : 'post'].map(post =>
+        //     <TouchableWithoutFeedback
+        //         onPress={() => this.props.navigation.navigate('DetailPost', post)}>
+        //         <View style={{width: '33.3%', marginVertical: 1}}>
+        //             <Image source={{uri: post.imageURL}} style={{width: '100%', height: 125}}/>
+        //         </View>
+        //     </TouchableWithoutFeedback>)
+        var i = 2;
+        return this.state[this.state.search ? 'filteredPost' : 'post'].map((post, index) => {
+            var styleObj = {width: '33%', marginVertical: 1};
+            if ((index + 1) === i) {
+                i += 3;
+                styleObj.marginHorizontal = '0.5%';
+            }
+            return (
+                <View
+                    style={styleObj}
+                >
+                    <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('DetailPost', post)}>
+                        <Image source={{uri: post.imageURL}} style={{height: 125, width: '100%'}}/>
+                    </TouchableWithoutFeedback>
+                </View>
+            );
+        });
+    };
 
 
     render() {
@@ -56,14 +82,13 @@ class Explore extends React.Component {
                 </View>
 
                 <ScrollView>
-                    <View style={{flexWrap: 'wrap', alignItems: 'flex-start', flexDirection: 'row', width: '100%'}}>
-                        {this.state[this.state.search ? 'filteredPost' : 'post'].map(post =>
-                            <TouchableWithoutFeedback
-                                onPress={() => this.props.navigation.navigate('DetailPost', post)}>
-                                <View style={{width: '33.3%', marginVertical: 1}}>
-                                    <Image source={{uri: post.imageURL}} style={{width: '100%', height: 125}}/>
-                                </View>
-                            </TouchableWithoutFeedback>)}
+                    <View style={{
+                        flexDirection: 'row',
+                        flexWrap: 'wrap',
+                        flex: 1,
+                        // justifyContent: 'space-between'
+                    }}>
+                        {this.renderExplore()}
                     </View>
                 </ScrollView>
             </>
