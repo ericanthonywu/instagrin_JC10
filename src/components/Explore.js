@@ -42,7 +42,6 @@ class Explore extends React.Component {
     render() {
         return (
             <>
-
                 <View>
                     <SearchBar
                         placeholder="Search"

@@ -8,13 +8,14 @@ import '@firebase/database';
 import '@firebase/storage';
 
 class ExplorePostDetail extends React.Component {
-    state = {username: ''}
+    state = {username: '',photoURL: ''}
 
     componentDidMount() {
         firebase.database().ref(`users/${this.props.navigation.getParam('userId')}`).once('value').then(async post => {
             await Object.keys(post.val()).forEach(data => {
                 this.setState({
                     username: post.val()[data].displayName,
+                    photoURL: post.val()[data].photoURL,
                 });
             });
         });
@@ -48,7 +49,7 @@ class ExplorePostDetail extends React.Component {
                     <Card>
                         <CardItem>
                             <Left style={{flex: 3}}>
-                                <Thumbnail source={{uri: this.props.userPhoto}}/>
+                                <Thumbnail source={{uri: this.state.photoURL}}/>
                                 <Body>
                                     <Text>{this.state.username}</Text>
                                     <Text note>Instagrin User</Text>

@@ -52,7 +52,7 @@ class EditCaptionPostDetailProfile extends React.Component {
                     <Card>
                         <CardItem>
                             <Left style={{flex: 3}}>
-                                <Thumbnail source={{uri: this.props.userPhoto}}/>
+                                <Thumbnail source={{uri: this.props.navigation.getParam('userPhoto')}}/>
                                 <Body>
                                     <Text>{this.props.navigation.getParam('username')}</Text>
                                     <Text note>Instagrin User</Text>
