@@ -27,7 +27,7 @@ class ExplorePostDetail extends React.Component {
                 <Header
                     placement='left'
                     centerComponent={{
-                        text: 'Post',
+                        text: 'Explore',
                         style: {color: 'black', fontSize: 18, fontWeight: '700'},
                     }}
                     leftComponent={

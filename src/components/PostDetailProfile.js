@@ -17,6 +17,9 @@ class PostDetailProfile extends Component {
             this.props.navigation.goBack();
         }
     }
+    componentWillUnmount(): void {
+        this.props.selectProfilePost(null)
+    }
 
     // componentDidMount(){
     //     alert(JSON.stringify(this.props))

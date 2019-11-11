@@ -1,6 +1,8 @@
 import React from 'react';
-import {Header, Input} from 'react-native-elements';
+import {Header, Icon, Input} from 'react-native-elements';
 import firebase from '@firebase/app';
+import {Body, Card, CardItem, Left, Right, Text, Thumbnail} from 'native-base';
+import {Image, KeyboardAvoidingView, ScrollView} from 'react-native';
 
 class EditCaptionPostDetailProfile extends React.Component {
     state = {
@@ -26,11 +28,11 @@ class EditCaptionPostDetailProfile extends React.Component {
                 <Header
                     placement='left'
                     centerComponent={{
-                        text: 'Post',
+                        text: 'Edit Info',
                         style: {color: 'black', fontSize: 18, fontWeight: '700'},
                     }}
                     leftComponent={{
-                        icon: 'cancel',
+                        icon: 'close',
                         color: 'black',
                         onPress: () => this.props.navigation.goBack(),
                     }}
@@ -46,8 +48,28 @@ class EditCaptionPostDetailProfile extends React.Component {
                         marginTop: Platform.OS === 'ios' ? 0 : -25,
                     }}
                 />
-                <Input defaultValue={this.state.caption}
-                       onChange={event => this.setState({caption: event.nativeEvent.text})}/>
+                <ScrollView>
+                    <Card>
+                        <CardItem>
+                            <Left style={{flex: 3}}>
+                                <Thumbnail source={{uri: this.props.userPhoto}}/>
+                                <Body>
+                                    <Text>{this.props.navigation.getParam('username')}</Text>
+                                    <Text note>Instagrin User</Text>
+                                </Body>
+                            </Left>
+                        </CardItem>
+                        <CardItem cardBody>
+                            <Image source={{uri: this.props.navigation.getParam('imageURL')}} style={{height: 350, width: null, flex: 1}}/>
+                        </CardItem>
+                        <CardItem>
+                            <Left>
+                                <Input defaultValue={this.state.caption}
+                                       onChange={event => this.setState({caption: event.nativeEvent.text})}/>
+                            </Left>
+                        </CardItem>
+                    </Card>
+                </ScrollView>
             </>
         );
     }
